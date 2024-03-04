@@ -56,7 +56,7 @@ function clearWarning() {
 }
 
 function setWarning(e) {
-  warning.textContent = `Coś poszło nie tak, tekst błędu: ${e.message}`;
+  warning.textContent = `Wpisz poprawną nazwę miasta`;
 }
 
 function setCityName() {
@@ -79,35 +79,35 @@ function setPhoto(data) {
   const weather = data.weather[0].main;
   switch (weather) {
     case 'Clear': {
-      photo.setAttribute('src', 'img/Clear.png');
+      photo.setAttribute('src', '../img/Clear.png');
       break;
     }
     case 'Clouds': {
-      photo.setAttribute('src', 'img/Clouds.png');
+      photo.setAttribute('src', '../img/Clouds.png');
       break;
     }
     case 'Drizzle': {
-      photo.setAttribute('src', 'img/Drizzle.png');
+      photo.setAttribute('src', '../img/Drizzle.png');
       break;
     }
     case 'Fog': {
-      photo.setAttribute('src', 'img/Fog.png');
+      photo.setAttribute('src', '../img/Fog.png');
       break;
     }
     case 'Ice': {
-      photo.setAttribute('src', 'img/Ice.png');
+      photo.setAttribute('src', '../img/Ice.png');
       break;
     }
     case 'Rain': {
-      photo.setAttribute('src', 'img/Rain.png');
+      photo.setAttribute('src', '../img/Rain.png');
       break;
     }
     case 'Thunderstorm': {
-      photo.setAttribute('src', 'img/Thunderstorm.png');
+      photo.setAttribute('src', '../img/Thunderstorm.png');
       break;
     }
     default: {
-      photo.setAttribute('src', 'img/Unknown.png');
+      photo.setAttribute('src', '../img/Unknown.png');
       break;
     }
   }
