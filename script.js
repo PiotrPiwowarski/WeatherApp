@@ -7,26 +7,60 @@ const weather = document.querySelector('.weather');
 const temperature = document.querySelector('.temperature');
 const humidity = document.querySelector('.humidity');
 
-const URL = 'https://api.openweathermap.org/data/2.5/weather';
-const language = 'pl';
-const units = 'metric';
-const apiKey = 'f2a429ee2d724de35a14db075ef14342';
+const LANGUAGE = 'pl';
+const UNITS = 'metric';
+const CITY_URL = 'http://api.openweathermap.org/geo/1.0/direct';
+const WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather';
+const API_KEY = 'f2a429ee2d724de35a14db075ef14342';
+let lat;
+let lon;
 
 async function sendRequest(event) {
+  clearWarning();
   if(event.type === 'click' || event.key === 'Enter' && event.type === 'keydown') {
-    const URL = createUrl();
-    const response = await axios.get(URL);
-    console.log(response);
-    getParameters(response);
+    try {
+      await getGeographicalCoordinates(input.value);
+      const url = `${WEATHER_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${UNITS}&lang=${LANGUAGE}`;
+      const response = await axios.get(url);
+      getParameters(response);
+      clearInput();
+    } catch(e) {
+      setWarning(e);
+      clearInput();
+    }
   }
+}
+
+async function getGeographicalCoordinates(city) {
+  const url = `${CITY_URL}?q=${city}&appid=${API_KEY}`;
+  const response = await axios.get(url);
+  lat = response.data[0].lat;
+  lon = response.data[0].lon;
 }
 
 function getParameters(response) {
   const data = response.data;
+  setCityName(data);
   setPhoto(data);
   setWeather(data);
   setTemperature(data);
   setHumidity(data);
+}
+
+function clearInput() {
+  input.value = '';
+}
+
+function clearWarning() {
+  warning.textContent = '';
+}
+
+function setWarning(e) {
+  warning.textContent = `Coś poszło nie tak, tekst błędu: ${e.message}`;
+}
+
+function setCityName() {
+  cityName.textContent = input.value;
 }
 
 function setHumidity(data) {
@@ -77,11 +111,6 @@ function setPhoto(data) {
       break;
     }
   }
-}
-
-function createUrl() {
-  const city = input.value;
-  return`${URL}?q=${city}&units=${units}&appid=${apiKey}&lang=${language}`;
 }
 
 button.addEventListener('click', event => sendRequest(event));
